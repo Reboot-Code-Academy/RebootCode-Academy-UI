@@ -4,7 +4,7 @@ export const navLinks = [
   { label: 'About', path: '/about' },
   { label: 'Gallery', path: '/gallery' },
   { label: 'Contact', path: '/contact' },
-  { label: 'Login', path: '/login' },
+  { label: 'Login', path: '/student-login' },
 ]
 
 export const contactInfo = {
@@ -24,17 +24,28 @@ export const announcements = [
     id: 1,
     label: 'New Batch',
     text: 'New Python batch starts from 15 October.',
+    actionPath: '/courses',
+    startDate: '2026-09-21',
+    endDate: '2026-10-15',
+    isActive: true,
   },
   {
     id: 2,
     label: 'Book Free Demo',
     text: 'Book a 3-day free demo class for Web Development.',
     actionPath: '/contact',
+    startDate: '2026-09-21',
+    endDate: '2026-12-31',
+    isActive: true,
   },
   {
     id: 3,
     label: 'Admissions',
     text: 'Limited seats open for Java Full Stack weekend batch.',
+    actionPath: '/courses',
+    startDate: '2026-09-21',
+    endDate: '2026-10-31',
+    isActive: true,
   },
 ]
 

@@ -7,7 +7,8 @@ import Contact from './pages/Contact.jsx'
 import Courses from './pages/Courses.jsx'
 import Gallery from './pages/Gallery.jsx'
 import Home from './pages/Home.jsx'
-import Login from './pages/Login.jsx'
+import StudentLogin from './pages/StudentLogin.jsx'
+import StudentDashboard from './pages/StudentDashboard.jsx'
 
 const routes = {
   '/': Home,
@@ -15,8 +16,9 @@ const routes = {
   '/about': About,
   '/gallery': Gallery,
   '/contact': Contact,
-  '/login': Login,
   '/admin': AdminDashboard,
+  '/student-login': StudentLogin,
+  '/student-dashboard': StudentDashboard,
 }
 
 function getCurrentPath() {
@@ -46,14 +48,24 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      <Navbar activePath={path} onNavigate={navigate} />
-      <main>
-        <Page onNavigate={navigate} />
-      </main>
-      <Footer onNavigate={navigate} />
-    </div>
-  )
-}
+  <div className="app-shell">
+    {path !== '/student-login' &&
+      path !== '/student-dashboard' && (
+        <Navbar
+          activePath={path}
+          onNavigate={navigate}
+        />
+      )}
+
+    <main>
+      <Page onNavigate={navigate} />
+    </main>
+
+    {path !== '/student-login' &&
+      path !== '/student-dashboard' && (
+        <Footer onNavigate={navigate} />
+      )}
+  </div>
+)}
 
 export default App
