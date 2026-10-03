@@ -1,38 +1,49 @@
 import { useEffect, useState } from 'react'
 import Section from '../components/Section.jsx'
+import { api } from '../services/api.js'
 
-const STORAGE_KEY = 'reboot-code-academy-courses'
+function formatCourse(course) {
+  return {
+    id: course.id,
+    name: course.name || '',
+    description: course.description || '',
+    level: course.level || '',
+    duration: course.duration || '',
+    topics: course.topics
+      ? course.topics
+          .split(',')
+          .map((topic) => topic.trim())
+          .filter(Boolean)
+      : [],
+    image: course.image_url || '',
+    isActive: course.is_active,
+  }
+}
 
 function Courses({ onNavigate }) {
   const [courses, setCourses] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const loadCourses = () => {
-      const savedCourses = localStorage.getItem(STORAGE_KEY)
-
-      if (!savedCourses) {
-        setCourses([])
-        return
-      }
-
-      try {
-        setCourses(JSON.parse(savedCourses))
-      } catch (error) {
-        console.error('Could not read courses:', error)
-        setCourses([])
-      }
-    }
-
     loadCourses()
-
-    window.addEventListener('storage', loadCourses)
-    window.addEventListener('focus', loadCourses)
-
-    return () => {
-      window.removeEventListener('storage', loadCourses)
-      window.removeEventListener('focus', loadCourses)
-    }
   }, [])
+
+  async function loadCourses() {
+    try {
+      setLoading(true)
+
+      const data = await api.get('/courses')
+
+      const formattedCourses = data.map(formatCourse)
+
+      setCourses(formattedCourses)
+    } catch (error) {
+      console.error('Could not load courses:', error)
+      setCourses([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const activeCourses = courses.filter(
     (course) => course.isActive !== false
@@ -76,6 +87,7 @@ function Courses({ onNavigate }) {
         {/* CSS animated coding illustration.
             This is intentionally local, so the page does not depend
             on an external animation URL. */}
+
         <div
           className="courses-code-animation"
           aria-label="Animated coding illustration"
@@ -87,6 +99,7 @@ function Courses({ onNavigate }) {
 
           <div className="courses-laptop">
             <div className="courses-laptop-screen">
+
               <div className="courses-code-topbar">
                 <span />
                 <span />
@@ -95,6 +108,7 @@ function Courses({ onNavigate }) {
               </div>
 
               <div className="courses-code-body">
+
                 <div className="code-line line-short">
                   <i>const</i> skill = <em>"coding"</em>
                 </div>
@@ -155,14 +169,28 @@ function Courses({ onNavigate }) {
         title="Available courses"
       >
         <div className="course-grid courses-page-grid">
-          {activeCourses.length === 0 ? (
+
+          {loading ? (
             <div className="courses-empty-state">
               <div className="courses-empty-icon">&lt;/&gt;</div>
+
+              <h3>Loading courses...</h3>
+
+              <p>
+                Please wait while we load the available courses.
+              </p>
+            </div>
+          ) : activeCourses.length === 0 ? (
+            <div className="courses-empty-state">
+              <div className="courses-empty-icon">&lt;/&gt;</div>
+
               <h3>Courses are coming soon</h3>
+
               <p>
                 No active courses are currently available. Please check
                 again soon.
               </p>
+
               <button
                 type="button"
                 onClick={() => onNavigate('/contact')}
@@ -176,13 +204,16 @@ function Courses({ onNavigate }) {
                 className="course-card courses-page-card"
                 key={course.id}
               >
+
                 <div className="courses-card-image">
+
                   {course.image ? (
                     <img
                       src={course.image}
                       alt={course.name}
                       onError={(event) => {
                         event.currentTarget.style.display = 'none'
+
                         event.currentTarget.nextElementSibling?.classList.add(
                           'show'
                         )
@@ -200,9 +231,11 @@ function Courses({ onNavigate }) {
                   >
                     <span>&lt;/&gt;</span>
                   </div>
+
                 </div>
 
                 <div className="courses-card-content">
+
                   <span className="pill">
                     {course.level}
                   </span>
@@ -214,13 +247,17 @@ function Courses({ onNavigate }) {
                   {course.topics?.length > 0 && (
                     <div className="topic-row">
                       {course.topics.map((topic) => (
-                        <span key={topic}>{topic}</span>
+                        <span key={topic}>
+                          {topic}
+                        </span>
                       ))}
                     </div>
                   )}
+
                 </div>
 
                 <div className="course-meta">
+
                   <span>{course.duration}</span>
 
                   <button
@@ -229,10 +266,13 @@ function Courses({ onNavigate }) {
                   >
                     Enquire
                   </button>
+
                 </div>
+
               </article>
             ))
           )}
+
         </div>
       </Section>
 
@@ -246,41 +286,55 @@ function Courses({ onNavigate }) {
         title="What you'll learn"
       >
         <div className="course-learning-grid">
+
           <article className="course-learning-card">
             <div className="course-learning-icon">&lt;/&gt;</div>
             <h3>Programming</h3>
-            <p>Python, Java, JavaScript and core programming concepts.</p>
+            <p>
+              Python, Java, JavaScript and core programming concepts.
+            </p>
           </article>
 
           <article className="course-learning-card">
             <div className="course-learning-icon">&lt;web&gt;</div>
             <h3>Web Development</h3>
-            <p>HTML, CSS, React and modern frontend development.</p>
+            <p>
+              HTML, CSS, React and modern frontend development.
+            </p>
           </article>
 
           <article className="course-learning-card">
             <div className="course-learning-icon">AI</div>
             <h3>AI & Automation</h3>
-            <p>Explore AI tools, APIs and practical AI-powered applications.</p>
+            <p>
+              Explore AI tools, APIs and practical AI-powered applications.
+            </p>
           </article>
 
           <article className="course-learning-card">
             <div className="course-learning-icon">DB</div>
             <h3>Backend & Database</h3>
-            <p>Build backend services and work with databases and APIs.</p>
+            <p>
+              Build backend services and work with databases and APIs.
+            </p>
           </article>
 
           <article className="course-learning-card">
             <div className="course-learning-icon">01</div>
             <h3>Problem Solving</h3>
-            <p>Improve logic, debugging, algorithms and coding confidence.</p>
+            <p>
+              Improve logic, debugging, algorithms and coding confidence.
+            </p>
           </article>
 
           <article className="course-learning-card">
             <div className="course-learning-icon">PR</div>
             <h3>Real Projects</h3>
-            <p>Turn concepts into practical applications through projects.</p>
+            <p>
+              Turn concepts into practical applications through projects.
+            </p>
           </article>
+
         </div>
       </Section>
 
@@ -294,43 +348,72 @@ function Courses({ onNavigate }) {
         title="How learning works"
       >
         <div className="learning-process">
+
           <article className="learning-process-step">
             <div className="learning-process-number">01</div>
+
             <div>
               <h3>Learn</h3>
-              <p>Understand the fundamentals with structured lessons.</p>
+              <p>
+                Understand the fundamentals with structured lessons.
+              </p>
             </div>
           </article>
 
-          <div className="learning-process-arrow" aria-hidden="true">→</div>
+          <div
+            className="learning-process-arrow"
+            aria-hidden="true"
+          >
+            →
+          </div>
 
           <article className="learning-process-step">
             <div className="learning-process-number">02</div>
+
             <div>
               <h3>Practice</h3>
-              <p>Strengthen your understanding through coding exercises.</p>
+              <p>
+                Strengthen your understanding through coding exercises.
+              </p>
             </div>
           </article>
 
-          <div className="learning-process-arrow" aria-hidden="true">→</div>
+          <div
+            className="learning-process-arrow"
+            aria-hidden="true"
+          >
+            →
+          </div>
 
           <article className="learning-process-step">
             <div className="learning-process-number">03</div>
+
             <div>
               <h3>Build</h3>
-              <p>Apply what you learn by creating practical projects.</p>
+              <p>
+                Apply what you learn by creating practical projects.
+              </p>
             </div>
           </article>
 
-          <div className="learning-process-arrow" aria-hidden="true">→</div>
+          <div
+            className="learning-process-arrow"
+            aria-hidden="true"
+          >
+            →
+          </div>
 
           <article className="learning-process-step">
             <div className="learning-process-number">04</div>
+
             <div>
               <h3>Grow</h3>
-              <p>Keep improving your skills with guided learning.</p>
+              <p>
+                Keep improving your skills with guided learning.
+              </p>
             </div>
           </article>
+
         </div>
       </Section>
 
@@ -344,37 +427,51 @@ function Courses({ onNavigate }) {
         title="What you get"
       >
         <div className="course-benefits-grid">
+
           <article className="course-benefit-card">
             <span>01</span>
+
             <div>
               <h3>Project-Based Learning</h3>
-              <p>Apply concepts by working on practical projects.</p>
+              <p>
+                Apply concepts by working on practical projects.
+              </p>
             </div>
           </article>
 
           <article className="course-benefit-card">
             <span>02</span>
+
             <div>
               <h3>Hands-On Practice</h3>
-              <p>Learn through coding exercises and practical activities.</p>
+              <p>
+                Learn through coding exercises and practical activities.
+              </p>
             </div>
           </article>
 
           <article className="course-benefit-card">
             <span>03</span>
+
             <div>
               <h3>Learning Guidance</h3>
-              <p>Follow a structured path from fundamentals to projects.</p>
+              <p>
+                Follow a structured path from fundamentals to projects.
+              </p>
             </div>
           </article>
 
           <article className="course-benefit-card">
             <span>04</span>
+
             <div>
               <h3>Modern Technologies</h3>
-              <p>Work with technologies used in current software development.</p>
+              <p>
+                Work with technologies used in current software development.
+              </p>
             </div>
           </article>
+
         </div>
       </Section>
 
@@ -383,9 +480,16 @@ function Courses({ onNavigate }) {
       ========================================= */}
 
       <section className="courses-final-cta">
+
         <div>
-          <span className="eyebrow">Need Help Choosing?</span>
-          <h2>Not sure which course is right for you?</h2>
+          <span className="eyebrow">
+            Need Help Choosing?
+          </span>
+
+          <h2>
+            Not sure which course is right for you?
+          </h2>
+
           <p>
             Talk to us about your current skills and learning goals.
             We can help you understand the available courses.
@@ -398,6 +502,7 @@ function Courses({ onNavigate }) {
         >
           Book a demo
         </button>
+
       </section>
 
     </div>

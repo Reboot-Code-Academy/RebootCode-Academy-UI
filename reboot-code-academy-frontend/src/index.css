@@ -775,13 +775,6 @@ p {
   overflow: hidden;
 }
 
-.gallery-visual span {
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 999px;
-  font-weight: 800;
-  padding: 6px 10px;
-}
 
 .visual-1 {
   background: linear-gradient(135deg, #18202f, #1253a4);
@@ -2579,6 +2572,272 @@ body:has(.admin-layout) .site-footer {
   border-top: 1px solid #edf0f3;
 }
 
+/* =========================================================
+   GALLERY - COURSE STYLE CARD DESIGN
+   ========================================================= */
+
+.reboot-gallery-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Gallery Card */
+.reboot-gallery-card {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 8px;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.reboot-gallery-card:hover {
+  transform: translateY(-3px);
+  border-color: #c7d7ef;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+}
+
+
+/* =========================================================
+   IMAGE AREA
+   ========================================================= */
+
+.reboot-gallery-card .gallery-visual {
+  position: relative !important;
+
+  width: 100% !important;
+  height: auto !important;
+
+  aspect-ratio: 16 / 10 !important;
+
+  min-height: 0 !important;
+  max-height: none !important;
+
+  overflow: hidden !important;
+
+  background: #eef3f8;
+  display: block !important;
+}
+
+.reboot-gallery-card .gallery-visual img {
+  display: block !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover !important;
+  object-position: center !important;
+
+  transition: transform 0.35s ease;
+}
+
+.reboot-gallery-card:hover .gallery-visual img {
+  transform: scale(1.03);
+}
+
+
+/* =========================================================
+   IMAGE PLACEHOLDER
+   ========================================================= */
+
+.reboot-gallery-card .gallery-visual-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f1f5f9;
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   CATEGORY BADGE
+   ========================================================= */
+
+.reboot-gallery-card .gallery-category-badge {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 7px 12px;
+
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #0755a8;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+
+/* =========================================================
+   VIEW BADGE
+   ========================================================= */
+
+.reboot-gallery-card .gallery-view-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #174ea6;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.reboot-gallery-card .gallery-card-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px 24px 22px;
+
+  background: #ffffff;
+}
+
+
+/* Title */
+.reboot-gallery-card .gallery-card-content h3 {
+  margin: 0 0 8px;
+
+  color: #0f172a;
+
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+
+/* Description */
+.reboot-gallery-card .gallery-card-content p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   VIDEO BUTTON
+   ========================================================= */
+
+.reboot-gallery-card .gallery-video-button {
+  margin-top: auto;
+  padding-top: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+
+  border-radius: 6px;
+
+  background: #155bb5;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-decoration: none;
+
+  transition: background 0.2s ease;
+}
+
+.reboot-gallery-card .gallery-video-button:hover {
+  background: #0d4b98;
+}
+
+
+/* =========================================================
+   IMAGE BUTTON
+   ========================================================= */
+
+.reboot-gallery-card .gallery-image-button {
+  display: block;
+
+  width: 100%;
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .reboot-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+  }
+}
+
+@media (max-width: 700px) {
+  .reboot-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .reboot-gallery-card .gallery-card-content {
+    padding: 18px 20px 20px;
+  }
+
+  .reboot-gallery-card .gallery-card-content h3 {
+    font-size: 18px;
+  }
+
+  .reboot-gallery-card .gallery-card-content p {
+    font-size: 14px;
+  }
+}
+
 /* Responsive */
 
 @media (max-width: 900px) {
@@ -2621,92 +2880,6 @@ body:has(.admin-layout) .site-footer {
   .gallery-admin-actions button {
     width: 100%;
   }
-}
-
-
-
-/* =========================================
-   PUBLIC GALLERY
-========================================= */
-
-.gallery-card {
-  overflow: hidden;
-}
-
-.gallery-visual {
-  position: relative;
-  overflow: hidden;
-}
-
-.gallery-visual img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.gallery-category-badge {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.gallery-card-content {
-  padding-top: 14px;
-}
-
-.gallery-card-category {
-  display: block;
-  margin-bottom: 5px;
-  color: #64748b;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.gallery-card h3 {
-  margin-bottom: 8px;
-}
-
-.gallery-card p {
-  margin: 0;
-}
-
-.gallery-video-button {
-  display: inline-block;
-  margin-top: 12px;
-  color: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.gallery-video-button:hover {
-  text-decoration: underline;
-}
-
-.gallery-empty {
-  padding: 50px 20px;
-  text-align: center;
-  border: 1px dashed #d9dee6;
-  border-radius: 12px;
-}
-
-.gallery-empty h3 {
-  margin: 0 0 8px;
-}
-
-.gallery-empty p {
-  margin: 0;
 }
 
 
@@ -8466,6 +8639,27 @@ body:has(.admin-layout) .site-footer {
   line-height: 1.65;
 }
 
+.reboot-gallery-card h3,
+.reboot-gallery-card p {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.reboot-gallery-card .gallery-category-badge {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.reboot-gallery-card .gallery-view-badge {
+  width: auto;
+  min-height: 0;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: rgba(255,255,255,.94);
+  border: 0;
+  color: #0f172a;
+}
+
 .gallery-video-button {
   display: inline-flex;
   align-items: center;
@@ -11758,6 +11952,122 @@ body:has(.admin-layout) .site-footer {
   font-weight: 500;
 }
 
+/* =========================================================
+   FINAL GALLERY CLEAN FIX
+   Remove old title/button overlay styles
+========================================================= */
+
+.reboot-gallery-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.reboot-gallery-card .gallery-image-button {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  text-align: left !important;
+}
+
+.reboot-gallery-card .gallery-visual {
+  position: relative !important;
+  width: 100% !important;
+  height: 245px !important;
+  min-height: 245px !important;
+  max-height: 245px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: block !important;
+  background: #eef2f7 !important;
+  border-radius: 0 !important;
+}
+
+.reboot-gallery-card .gallery-visual img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+}
+
+/* Make sure the title stays BELOW the image */
+.reboot-gallery-card .gallery-card-content {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 20px 21px 22px !important;
+  background: #ffffff !important;
+}
+
+.reboot-gallery-card .gallery-card-content h3 {
+  position: static !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 7px 0 8px !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: #0f172a !important;
+  font-size: 19px !important;
+  line-height: 1.3 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Category badge */
+.reboot-gallery-card .gallery-category-badge {
+  position: absolute !important;
+  left: 14px !important;
+  top: 14px !important;
+  bottom: auto !important;
+  z-index: 5 !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 7px 10px !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, 0.78) !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+}
+
+/* View button */
+.reboot-gallery-card .gallery-view-badge {
+  position: absolute !important;
+  right: 14px !important;
+  bottom: 14px !important;
+  z-index: 5 !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 7px 10px !important;
+  border-radius: 9px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+  font-size: 10px !important;
+}
+
+/* Prevent old generic gallery span styles */
+.reboot-gallery-card .gallery-visual > span {
+  display: inline-flex !important;
+}
+
 /* Tablet */
 @media (max-width: 1050px) {
   .admin-stat-grid {
@@ -11854,7 +12164,843 @@ body:has(.admin-layout) .site-footer {
   }
 }
 
+/* =========================================================
+   REBOOT CODE ACADEMY - FINAL OVERRIDES
+   Gallery image sizing + Admin layout spacing
+   These rules intentionally come LAST so they override older
+   duplicate Gallery/Admin rules in this large stylesheet.
+========================================================= */
+
+/* =========================================================
+   ADMIN LAYOUT - REMOVE DUPLICATE SIDEBAR SPACE
+========================================================= */
+
+.admin-layout {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  background: #f5f7fb;
+  overflow: hidden;
+}
+
+.admin-sidebar {
+  width: 250px;
+  min-width: 250px;
+  flex: 0 0 250px;
+}
+
+.admin-main {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  width: auto !important;
+  margin-left: 0 !important;
+  background: #f5f7fb;
+}
+
+.admin-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   FINAL PUBLIC GALLERY CARD DESIGN
+========================================================= */
+
+.reboot-gallery-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: start;
+}
+
+.reboot-gallery-card {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden !important;
+  position: relative;
+  padding: 0 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 18px !important;
+  background: #ffffff !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.reboot-gallery-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.10) !important;
+}
+
+.reboot-gallery-card .gallery-image-button {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  text-align: left !important;
+  cursor: pointer;
+}
+
+/* Keep every gallery image area the same ratio.
+   Uploaded portrait/landscape images are cropped cleanly. */
+.reboot-gallery-card .gallery-visual {
+  position: relative !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 16 / 10 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: block !important;
+  background: #eef2f7 !important;
+  border-radius: 0 !important;
+}
+
+.reboot-gallery-card .gallery-visual img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transition: transform 0.35s ease;
+}
+
+.reboot-gallery-card:hover .gallery-visual img {
+  transform: scale(1.03);
+}
+
+/* Placeholder when no image exists */
+.reboot-gallery-card .gallery-visual-placeholder {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(145deg, #eff6ff, #dbeafe) !important;
+  color: #2563eb !important;
+}
+
+.reboot-gallery-card .gallery-visual-placeholder span {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 42px;
+  font-weight: 800;
+}
+
+.reboot-gallery-card .gallery-visual-placeholder small {
+  margin-top: 8px;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Category badge */
+.reboot-gallery-card .gallery-category-badge {
+  position: absolute !important;
+  left: 14px !important;
+  top: 14px !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 6px 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 999px !important;
+  background: rgba(15, 23, 42, 0.78) !important;
+  color: #ffffff !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+
+/* View badge */
+.reboot-gallery-card .gallery-view-badge {
+  position: absolute !important;
+  right: 14px !important;
+  bottom: 14px !important;
+  left: auto !important;
+  top: auto !important;
+  z-index: 5 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 7px 11px !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #0f172a !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.reboot-gallery-card:hover .gallery-view-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card text must stay BELOW the image */
+.reboot-gallery-card .gallery-card-content {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 20px 21px !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+}
+
+.reboot-gallery-card .gallery-card-category {
+  display: block !important;
+  margin: 0 0 6px !important;
+  padding: 0 !important;
+  color: #2563eb !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em;
+  line-height: 1.3 !important;
+  text-transform: uppercase;
+}
+
+.reboot-gallery-card .gallery-card-content h3 {
+  position: static !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 0 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #0f172a !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.reboot-gallery-card .gallery-card-content p {
+  position: static !important;
+  display: -webkit-box !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #64748b !important;
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.reboot-gallery-card .gallery-video-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px;
+  margin-top: 14px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: #1d4ed8 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none;
+}
+
+.reboot-gallery-card .gallery-video-button:hover {
+  color: #1e40af !important;
+  text-decoration: underline;
+}
+
+/* =========================================================
+   GALLERY RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+  .reboot-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-sidebar {
+    width: 250px;
+    min-width: 250px;
+    flex-basis: 250px;
+  }
+
+  .admin-main {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .reboot-gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .reboot-gallery-card .gallery-view-badge {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .reboot-gallery-card .gallery-card-content {
+    padding: 16px 17px 19px !important;
+  }
+
+  .reboot-gallery-card .gallery-card-content h3 {
+    font-size: 18px !important;
+  }
+
+  .reboot-gallery-card .gallery-card-content p {
+    font-size: 13px !important;
+  }
+}
+
+/* =========================================================
+   REBOOT CODE ACADEMY
+   GALLERY - COURSE STYLE CARDS
+   ========================================================= */
 
 
+/* =========================================================
+   GALLERY GRID
+   ========================================================= */
 
+.gallery-course-grid {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 24px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   GALLERY CARD
+   Same visual language as Course cards
+   ========================================================= */
+
+.gallery-course-card {
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #dfe7f1;
+  border-radius: 8px;
+
+  box-shadow: 0 16px 44px rgba(22, 31, 48, 0.06);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.gallery-course-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #cbd9eb;
+
+  box-shadow: 0 20px 48px rgba(22, 31, 48, 0.10);
+}
+
+
+/* =========================================================
+   IMAGE BUTTON
+   ========================================================= */
+
+.gallery-course-image-button {
+  display: block;
+
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  border: 0;
+  border-radius: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  min-height: 0;
+
+  overflow: hidden;
+}
+
+.gallery-course-image-button:hover {
+  background: transparent;
+  border-color: transparent;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   IMAGE AREA
+   Fixed ratio = every card same height
+   ========================================================= */
+
+.gallery-course-media {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 16 / 10;
+
+  overflow: hidden;
+
+  background: #eef3f8;
+}
+
+
+/* =========================================================
+   ACTUAL IMAGE
+   ========================================================= */
+
+.gallery-course-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform 300ms ease;
+}
+
+.gallery-course-card:hover .gallery-course-image {
+  transform: scale(1.035);
+}
+
+
+/* =========================================================
+   IMAGE PLACEHOLDER
+   ========================================================= */
+
+.gallery-course-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eef4ff,
+      #f7f9fc
+    );
+
+  color: #1253a4;
+}
+
+.gallery-course-placeholder span {
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.gallery-course-placeholder small {
+  color: #627086;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   IMAGE CATEGORY BADGE
+   ========================================================= */
+
+.gallery-course-image-category {
+  position: absolute;
+
+  top: 14px;
+  left: 14px;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #1253a4;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.12);
+
+  backdrop-filter: blur(6px);
+}
+
+
+/* =========================================================
+   VIEW BADGE
+   ========================================================= */
+
+.gallery-course-view {
+  position: absolute;
+
+  right: 14px;
+  bottom: 14px;
+
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 34px;
+
+  padding: 0 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.7);
+
+  border-radius: 999px;
+
+  background: rgba(15, 23, 42, 0.72);
+
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  opacity: 0;
+
+  transform: translateY(5px);
+
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+
+  backdrop-filter: blur(6px);
+}
+
+.gallery-course-card:hover .gallery-course-view {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+
+/* =========================================================
+   CARD CONTENT
+   ========================================================= */
+
+.gallery-course-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 24px;
+}
+
+
+/* =========================================================
+   CATEGORY
+   Same style as course pill
+   ========================================================= */
+
+.gallery-course-category {
+  align-self: flex-start;
+
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 16px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #eef4ff;
+
+  color: #1253a4;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.gallery-course-content h3 {
+  margin: 0 0 10px;
+
+  color: #111827;
+
+  font-size: 21px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.gallery-course-content p {
+  margin: 0;
+
+  color: #5d6b80;
+
+  font-size: 15px;
+  line-height: 1.6;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   FOOTER
+   Same idea as course-meta
+   ========================================================= */
+
+.gallery-course-footer {
+  display: flex;
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: auto;
+  padding-top: 20px;
+
+  border-top: 1px solid #e5ebf3;
+}
+
+
+/* =========================================================
+   VIEW IMAGE BUTTON
+   ========================================================= */
+
+.gallery-course-view-button {
+  min-height: 44px;
+
+  padding: 0 20px;
+
+  border: 1px solid #1253a4;
+  border-radius: 6px;
+
+  background: #1253a4;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.gallery-course-view-button:hover {
+  background: #0b438a;
+  border-color: #0b438a;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   WATCH VIDEO BUTTON
+   ========================================================= */
+
+.gallery-course-video {
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 20px;
+
+  border: 1px solid #1253a4;
+  border-radius: 6px;
+
+  background: #1253a4;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.gallery-course-video:hover {
+  background: #0b438a;
+  border-color: #0b438a;
+
+  transform: translateY(-1px);
+}
+
+.gallery-course-video span {
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .gallery-course-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 780px) {
+
+  .gallery-course-grid {
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .gallery-course-media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .gallery-course-content {
+    padding: 20px;
+  }
+
+  .gallery-course-content h3 {
+    font-size: 20px;
+  }
+
+  .gallery-course-content p {
+    font-size: 14px;
+  }
+
+  .gallery-course-footer {
+    justify-content: stretch;
+  }
+
+  .gallery-course-view-button,
+  .gallery-course-video {
+    width: 100%;
+  }
+
+  .gallery-course-view {
+    opacity: 1;
+    transform: none;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .gallery-course-content {
+    padding: 18px;
+  }
+
+  .gallery-course-category {
+    font-size: 12px;
+  }
+
+  .gallery-course-content h3 {
+    font-size: 19px;
+  }
+
+  .gallery-course-content p {
+    font-size: 14px;
+  }
+
+}
 

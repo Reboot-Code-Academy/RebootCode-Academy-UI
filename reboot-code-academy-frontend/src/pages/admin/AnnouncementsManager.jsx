@@ -1,28 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Section from '../../components/Section.jsx'
-
-const STORAGE_KEY = 'reboot-code-academy-announcements'
-
-const defaultAnnouncements = [
-  {
-    id: 1,
-    label: 'New Batch',
-    text: 'New Python batch starts from 15 October.',
-    actionPath: '/courses',
-    startDate: '2026-09-21',
-    endDate: '2026-10-15',
-    isActive: true,
-  },
-  {
-    id: 2,
-    label: 'Book Free Demo',
-    text: 'Book a 3-day free demo class for Web Development.',
-    actionPath: '/contact',
-    startDate: '2026-09-21',
-    endDate: '2026-12-31',
-    isActive: true,
-  },
-]
+import { api } from '../../services/api.js'
 
 const emptyForm = {
   label: '',
@@ -32,42 +10,66 @@ const emptyForm = {
   endDate: '',
 }
 
+function formatAnnouncement(announcement) {
+  return {
+    id: announcement.id,
+    label: announcement.label || '',
+    text: announcement.text || '',
+    actionPath: announcement.action_path || '',
+    startDate: announcement.start_date || '',
+    endDate: announcement.end_date || '',
+    isActive: announcement.is_active,
+  }
+}
+
 function AnnouncementsManager() {
   const [announcements, setAnnouncements] = useState([])
   const [form, setForm] = useState(emptyForm)
   const [editingId, setEditingId] = useState(null)
   const [showForm, setShowForm] = useState(false)
 
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
   const formRef = useRef(null)
 
-  useEffect(() => {
-    const savedAnnouncements = localStorage.getItem(STORAGE_KEY)
+  // =========================================
+  // LOAD ANNOUNCEMENTS
+  // =========================================
 
-    if (savedAnnouncements) {
-      try {
-        setAnnouncements(JSON.parse(savedAnnouncements))
-      } catch (error) {
-        console.error('Could not read announcements:', error)
-        setAnnouncements(defaultAnnouncements)
-      }
-    } else {
-      setAnnouncements(defaultAnnouncements)
+  async function loadAnnouncements() {
+    try {
+      setLoading(true)
+      setError('')
 
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(defaultAnnouncements)
+      const data = await api.get('/announcements')
+
+      setAnnouncements(
+        data.map(formatAnnouncement)
       )
+    } catch (error) {
+      console.error(
+        'Could not load announcements:',
+        error
+      )
+
+      setError(
+        error.message ||
+          'Could not load announcements from the server.'
+      )
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
+    loadAnnouncements()
   }, [])
 
-  function saveAnnouncements(updatedAnnouncements) {
-    setAnnouncements(updatedAnnouncements)
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(updatedAnnouncements)
-    )
-  }
+  // =========================================
+  // FORM CHANGE
+  // =========================================
 
   function handleChange(event) {
     const { name, value } = event.target
@@ -78,7 +80,11 @@ function AnnouncementsManager() {
     }))
   }
 
-  function handleSubmit(event) {
+  // =========================================
+  // SUBMIT
+  // =========================================
+
+  async function handleSubmit(event) {
     event.preventDefault()
 
     if (!form.label.trim()) {
@@ -100,43 +106,76 @@ function AnnouncementsManager() {
       return
     }
 
-    if (editingId !== null) {
-      const updatedAnnouncements = announcements.map(
-        (announcement) =>
-          announcement.id === editingId
-            ? {
-                ...announcement,
-                label: form.label.trim(),
-                text: form.text.trim(),
-                actionPath: form.actionPath.trim(),
-                startDate: form.startDate,
-                endDate: form.endDate,
-              }
-            : announcement
-      )
+    try {
+      setSaving(true)
+      setError('')
 
-      saveAnnouncements(updatedAnnouncements)
-    } else {
-      const newAnnouncement = {
-        id: Date.now(),
+      const data = {
         label: form.label.trim(),
         text: form.text.trim(),
-        actionPath: form.actionPath.trim(),
-        startDate: form.startDate,
-        endDate: form.endDate,
-        isActive: true,
+        action_path: form.actionPath.trim() || null,
+        start_date: form.startDate || null,
+        end_date: form.endDate || null,
       }
 
-      saveAnnouncements([
-        ...announcements,
-        newAnnouncement,
-      ])
-    }
+      // =========================================
+      // UPDATE
+      // =========================================
 
-    setForm(emptyForm)
-    setEditingId(null)
-    setShowForm(false)
+      if (editingId !== null) {
+        await api.put(
+          `/announcements/${editingId}`,
+          data
+        )
+
+        alert('Announcement updated successfully.')
+      }
+
+      // =========================================
+      // CREATE
+      // =========================================
+
+      else {
+        await api.post(
+          '/announcements',
+          {
+            ...data,
+            is_active: true,
+          }
+        )
+
+        alert('Announcement created successfully.')
+      }
+
+      // Reload from database
+      await loadAnnouncements()
+
+      setForm(emptyForm)
+      setEditingId(null)
+      setShowForm(false)
+    } catch (error) {
+      console.error(
+        'Announcement save error:',
+        error
+      )
+
+      setError(
+        error.message ||
+          'Could not save the announcement.'
+      )
+
+      alert(
+        error.message ||
+          'Could not save the announcement.'
+      )
+    } finally {
+      setSaving(false)
+    }
   }
+
+  // =========================================
+  // ADD
+  // =========================================
 
   function handleAddAnnouncement() {
     setEditingId(null)
@@ -150,6 +189,10 @@ function AnnouncementsManager() {
       })
     }, 50)
   }
+
+  // =========================================
+  // EDIT
+  // =========================================
 
   function handleEdit(announcement) {
     setEditingId(announcement.id)
@@ -172,7 +215,11 @@ function AnnouncementsManager() {
     }, 50)
   }
 
-  function handleDelete(id) {
+  // =========================================
+  // DELETE
+  // =========================================
+
+  async function handleDelete(id) {
     const shouldDelete = window.confirm(
       'Are you sure you want to delete this announcement?'
     )
@@ -181,38 +228,87 @@ function AnnouncementsManager() {
       return
     }
 
-    const updatedAnnouncements = announcements.filter(
-      (announcement) => announcement.id !== id
-    )
+    try {
+      setError('')
 
-    saveAnnouncements(updatedAnnouncements)
+      await api.delete(
+        `/announcements/${id}`
+      )
 
-    if (editingId === id) {
-      setEditingId(null)
-      setForm(emptyForm)
-      setShowForm(false)
+      await loadAnnouncements()
+
+      if (editingId === id) {
+        setEditingId(null)
+        setForm(emptyForm)
+        setShowForm(false)
+      }
+
+      alert('Announcement deleted successfully.')
+    } catch (error) {
+      console.error(
+        'Announcement delete error:',
+        error
+      )
+
+      setError(
+        error.message ||
+          'Could not delete the announcement.'
+      )
+
+      alert(
+        error.message ||
+          'Could not delete the announcement.'
+      )
     }
   }
 
-  function handleToggleStatus(id) {
-    const updatedAnnouncements = announcements.map(
-      (announcement) =>
-        announcement.id === id
-          ? {
-              ...announcement,
-              isActive: !announcement.isActive,
-            }
-          : announcement
-    )
+  // =========================================
+  // TOGGLE STATUS
+  // =========================================
 
-    saveAnnouncements(updatedAnnouncements)
+  async function handleToggleStatus(announcement) {
+    try {
+      setError('')
+
+      await api.put(
+        `/announcements/${announcement.id}`,
+        {
+          is_active: !announcement.isActive,
+        }
+      )
+
+      await loadAnnouncements()
+    } catch (error) {
+      console.error(
+        'Announcement status update error:',
+        error
+      )
+
+      setError(
+        error.message ||
+          'Could not update announcement status.'
+      )
+
+      alert(
+        error.message ||
+          'Could not update announcement status.'
+      )
+    }
   }
+
+  // =========================================
+  // CANCEL
+  // =========================================
 
   function handleCancel() {
     setEditingId(null)
     setForm(emptyForm)
     setShowForm(false)
   }
+
+  // =========================================
+  // UI
+  // =========================================
 
   return (
     <Section
@@ -243,6 +339,22 @@ function AnnouncementsManager() {
           </button>
         </div>
 
+        {/* ERROR */}
+
+        {error && (
+          <div className="announcement-empty">
+            <p>{error}</p>
+
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={loadAnnouncements}
+            >
+              Try Again
+            </button>
+          </div>
+        )}
+
         {/* CREATE / EDIT FORM */}
 
         {showForm && (
@@ -269,6 +381,7 @@ function AnnouncementsManager() {
                 type="button"
                 className="button button-secondary"
                 onClick={handleCancel}
+                disabled={saving}
               >
                 Close
               </button>
@@ -299,6 +412,7 @@ function AnnouncementsManager() {
                       value={form.label}
                       onChange={handleChange}
                       placeholder="Admissions Open"
+                      disabled={saving}
                     />
 
                     <small className="form-help">
@@ -315,6 +429,7 @@ function AnnouncementsManager() {
                       value={form.text}
                       onChange={handleChange}
                       placeholder="Admissions are now open for 2026 batch"
+                      disabled={saving}
                     />
 
                     <small className="form-help">
@@ -331,6 +446,7 @@ function AnnouncementsManager() {
                       value={form.actionPath}
                       onChange={handleChange}
                       placeholder="/courses"
+                      disabled={saving}
                     />
 
                     <small className="form-help">
@@ -364,6 +480,7 @@ function AnnouncementsManager() {
                       name="startDate"
                       value={form.startDate}
                       onChange={handleChange}
+                      disabled={saving}
                     />
 
                     <small className="form-help">
@@ -379,6 +496,7 @@ function AnnouncementsManager() {
                       name="endDate"
                       value={form.endDate}
                       onChange={handleChange}
+                      disabled={saving}
                     />
 
                     <small className="form-help">
@@ -397,8 +515,11 @@ function AnnouncementsManager() {
                 <button
                   type="submit"
                   className="button button-primary"
+                  disabled={saving}
                 >
-                  {editingId !== null
+                  {saving
+                    ? 'Saving...'
+                    : editingId !== null
                     ? 'Update Announcement'
                     : 'Create Announcement'}
                 </button>
@@ -407,6 +528,7 @@ function AnnouncementsManager() {
                   type="button"
                   className="button button-secondary"
                   onClick={handleCancel}
+                  disabled={saving}
                 >
                   Cancel
                 </button>
@@ -437,7 +559,11 @@ function AnnouncementsManager() {
 
           </div>
 
-          {announcements.length === 0 ? (
+          {loading ? (
+            <div className="announcement-empty">
+              <p>Loading announcements...</p>
+            </div>
+          ) : announcements.length === 0 ? (
             <div className="announcement-empty">
 
               <p>
@@ -524,6 +650,7 @@ function AnnouncementsManager() {
                       onClick={() =>
                         handleEdit(announcement)
                       }
+                      disabled={saving}
                     >
                       Edit
                     </button>
@@ -532,8 +659,9 @@ function AnnouncementsManager() {
                       type="button"
                       className="button button-secondary"
                       onClick={() =>
-                        handleToggleStatus(announcement.id)
+                        handleToggleStatus(announcement)
                       }
+                      disabled={saving}
                     >
                       {announcement.isActive
                         ? 'Deactivate'
@@ -546,6 +674,7 @@ function AnnouncementsManager() {
                       onClick={() =>
                         handleDelete(announcement.id)
                       }
+                      disabled={saving}
                     >
                       Delete
                     </button>

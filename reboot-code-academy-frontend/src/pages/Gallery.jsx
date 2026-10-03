@@ -84,7 +84,8 @@ function Gallery({ onNavigate }) {
     )
 
     return galleryCategories.filter(
-      (category) => category === 'All' || usedCategories.has(category)
+      (category) =>
+        category === 'All' || usedCategories.has(category)
     )
   }, [galleryItems])
 
@@ -101,29 +102,43 @@ function Gallery({ onNavigate }) {
   const categoryCounts = useMemo(() => {
     return galleryItems.reduce((counts, item) => {
       if (item.category) {
-        counts[item.category] = (counts[item.category] || 0) + 1
+        counts[item.category] =
+          (counts[item.category] || 0) + 1
       }
+
       return counts
     }, {})
   }, [galleryItems])
 
   return (
     <div className="page reboot-gallery-page">
+
+      {/* =====================================================
+          HERO
+          ===================================================== */}
+
       <section className="page-hero compact-hero reboot-gallery-hero">
+
         <div className="gallery-hero-content">
           <span className="eyebrow">Gallery</span>
 
-          <h1>Moments from classes, labs, and project work.</h1>
+          <h1>
+            Moments from classes, labs, and project work.
+          </h1>
 
           <p>
-            Explore classroom activities, workshops, projects and learning
-            experiences at Reboot Code Academy.
+            Explore classroom activities, workshops, projects and
+            learning experiences at Reboot Code Academy.
           </p>
 
           <div className="gallery-hero-actions">
-            <button type="button" onClick={() => onNavigate('/courses')}>
+            <button
+              type="button"
+              onClick={() => onNavigate('/courses')}
+            >
               Explore Courses
             </button>
+
             <button
               type="button"
               className="secondary-button"
@@ -134,41 +149,73 @@ function Gallery({ onNavigate }) {
           </div>
         </div>
 
-        <div className="gallery-hero-visual" aria-hidden="true">
+        <div
+          className="gallery-hero-visual"
+          aria-hidden="true"
+        >
           <div className="gallery-photo-stack">
+
             <div className="gallery-photo-card gallery-photo-card-back">
               <span>&lt;/&gt;</span>
             </div>
+
             <div className="gallery-photo-card gallery-photo-card-middle">
               <span>◆</span>
             </div>
+
             <div className="gallery-photo-card gallery-photo-card-front">
               <span>RCA</span>
               <small>Learning in action</small>
             </div>
+
           </div>
         </div>
+
       </section>
+
+
+      {/* =====================================================
+          GALLERY
+          ===================================================== */}
 
       <Section
         eyebrow="Campus Life"
         title="Learning in action"
         description="Browse the latest moments shared through the academy gallery."
       >
+
         {galleryItems.length === 0 ? (
+
           <div className="gallery-empty reboot-gallery-empty">
-            <div className="gallery-empty-icon">◆</div>
-            <h3>No gallery items available</h3>
+
+            <div className="gallery-empty-icon">
+              ◆
+            </div>
+
+            <h3>
+              No gallery items available
+            </h3>
+
             <p>
-              Gallery content will be added soon. Check back for classroom
-              activities, workshops, projects and academy moments.
+              Gallery content will be added soon. Check back
+              for classroom activities, workshops, projects and
+              academy moments.
             </p>
+
           </div>
+
         ) : (
+
           <>
+
+            {/* FILTERS */}
+
             <div className="gallery-toolbar">
+
               <div className="gallery-filter-list">
+
                 {availableCategories.map((category) => (
+
                   <button
                     type="button"
                     key={category}
@@ -177,213 +224,430 @@ function Gallery({ onNavigate }) {
                         ? 'gallery-filter active'
                         : 'gallery-filter'
                     }
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() =>
+                      setSelectedCategory(category)
+                    }
                   >
                     {category}
+
                     {category !== 'All' && (
-                      <span>{categoryCounts[category] || 0}</span>
+                      <span>
+                        {categoryCounts[category] || 0}
+                      </span>
                     )}
+
                   </button>
+
                 ))}
+
               </div>
 
               <div className="gallery-result-count">
                 {filteredItems.length}{' '}
-                {filteredItems.length === 1 ? 'moment' : 'moments'}
+                {filteredItems.length === 1
+                  ? 'moment'
+                  : 'moments'}
               </div>
+
             </div>
 
+
+            {/* EMPTY FILTER */}
+
             {filteredItems.length === 0 ? (
+
               <div className="gallery-filter-empty">
-                <h3>No items in this category</h3>
-                <p>Choose another category to view more gallery content.</p>
+
+                <h3>
+                  No items in this category
+                </h3>
+
+                <p>
+                  Choose another category to view more gallery
+                  content.
+                </p>
+
               </div>
+
             ) : (
-              <div className="gallery-grid reboot-gallery-grid">
+
+              /* =================================================
+                 COURSE-STYLE GALLERY GRID
+                 ================================================= */
+
+              <div className="gallery-course-grid">
+
                 {filteredItems.map((item, index) => (
+
                   <article
-                    className="gallery-card reboot-gallery-card"
-                    key={item.id || item.title || index}
+                    className="gallery-course-card"
+                    key={
+                      item.id ||
+                      item.title ||
+                      index
+                    }
                   >
+
+                    {/* IMAGE */}
+
                     <button
                       type="button"
-                      className="gallery-image-button"
-                      onClick={() => setSelectedItem(item)}
-                      aria-label={`View ${item.title}`}
+                      className="gallery-course-image-button"
+                      onClick={() =>
+                        setSelectedItem(item)
+                      }
+                      aria-label={`View ${
+                        item.title || 'gallery image'
+                      }`}
                     >
-                      <div
-                        className={`gallery-visual visual-${
-                          (index % 3) + 1
-                        }`}
-                      >
+
+                      <div className="gallery-course-media">
+
                         {item.image ? (
-                          <img src={item.image} alt={item.title} />
+
+                          <img
+                            src={item.image}
+                            alt={
+                              item.title ||
+                              'Gallery image'
+                            }
+                            className="gallery-course-image"
+                          />
+
                         ) : (
-                          <div className="gallery-visual-placeholder">
+
+                          <div className="gallery-course-placeholder">
+
                             <span>&lt;/&gt;</span>
-                            <small>{item.category || 'Academy'}</small>
+
+                            <small>
+                              {item.category ||
+                                'Academy'}
+                            </small>
+
                           </div>
+
                         )}
 
-                        <span className="gallery-category-badge">
+                        <span className="gallery-course-image-category">
                           {item.category || 'Academy'}
                         </span>
 
-                        <span className="gallery-view-badge">
+                        <span className="gallery-course-view">
                           View
                         </span>
+
                       </div>
+
                     </button>
 
-                    <div className="gallery-card-content">
-                      <span className="gallery-card-category">
+
+                    {/* CONTENT */}
+
+                    <div className="gallery-course-content">
+
+                      <span className="gallery-course-category">
                         {item.category || 'Academy'}
                       </span>
 
-                      <h3>{item.title || 'Academy moment'}</h3>
+                      <h3>
+                        {item.title ||
+                          'Academy moment'}
+                      </h3>
 
                       {item.description && (
-                        <p>{item.description}</p>
+                        <p>
+                          {item.description}
+                        </p>
                       )}
 
-                      {item.videoUrl && (
-                        <a
-                          href={item.videoUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="gallery-video-button"
-                          onClick={(event) => event.stopPropagation()}
-                        >
-                          <span>▶</span>
-                          Watch Video
-                        </a>
-                      )}
+
+                      {/* BOTTOM ACTION */}
+
+                      <div className="gallery-course-footer">
+
+                        {item.videoUrl ? (
+
+                          <a
+                            href={item.videoUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="gallery-course-video"
+                            onClick={(event) =>
+                              event.stopPropagation()
+                            }
+                          >
+                            <span>▶</span>
+                            Watch Video
+                          </a>
+
+                        ) : (
+
+                          <button
+                            type="button"
+                            className="gallery-course-view-button"
+                            onClick={() =>
+                              setSelectedItem(item)
+                            }
+                          >
+                            View Image
+                          </button>
+
+                        )}
+
+                      </div>
+
                     </div>
+
                   </article>
+
                 ))}
+
               </div>
+
             )}
+
           </>
+
         )}
+
       </Section>
 
+
+      {/* =====================================================
+          EXPERIENCE SECTION
+          ===================================================== */}
+
       {galleryItems.length > 0 && (
+
         <Section
           eyebrow="Inside Reboot"
           title="More than just a classroom"
           description="Learning happens through practice, collaboration, projects and experiences that help students connect ideas with real work."
         >
+
           <div className="gallery-experience-grid">
-            <article className="gallery-experience-card">
-              <div className="gallery-experience-icon">&lt;/&gt;</div>
-              <h3>Classroom Learning</h3>
-              <p>
-                Follow structured lessons and strengthen concepts through
-                guided coding practice.
-              </p>
-            </article>
 
             <article className="gallery-experience-card">
-              <div className="gallery-experience-icon">⚙</div>
-              <h3>Hands-On Practice</h3>
+
+              <div className="gallery-experience-icon">
+                &lt;/&gt;
+              </div>
+
+              <h3>
+                Classroom Learning
+              </h3>
+
               <p>
-                Turn concepts into working features through exercises and
-                practical tasks.
+                Follow structured lessons and strengthen
+                concepts through guided coding practice.
               </p>
+
             </article>
 
-            <article className="gallery-experience-card">
-              <div className="gallery-experience-icon">◆</div>
-              <h3>Project Work</h3>
-              <p>
-                Apply your learning by creating useful websites, applications
-                and technology projects.
-              </p>
-            </article>
 
             <article className="gallery-experience-card">
-              <div className="gallery-experience-icon">↗</div>
-              <h3>Growth Moments</h3>
+
+              <div className="gallery-experience-icon">
+                ⚙
+              </div>
+
+              <h3>
+                Hands-On Practice
+              </h3>
+
               <p>
-                Review progress, learn from feedback and keep improving your
-                technical skills.
+                Turn concepts into working features through
+                exercises and practical tasks.
               </p>
+
             </article>
+
+
+            <article className="gallery-experience-card">
+
+              <div className="gallery-experience-icon">
+                ◆
+              </div>
+
+              <h3>
+                Project Work
+              </h3>
+
+              <p>
+                Apply your learning by creating useful
+                websites, applications and technology
+                projects.
+              </p>
+
+            </article>
+
+
+            <article className="gallery-experience-card">
+
+              <div className="gallery-experience-icon">
+                ↗
+              </div>
+
+              <h3>
+                Growth Moments
+              </h3>
+
+              <p>
+                Review progress, learn from feedback and
+                keep improving your technical skills.
+              </p>
+
+            </article>
+
           </div>
+
         </Section>
+
       )}
 
+
+      {/* =====================================================
+          FINAL CTA
+          ===================================================== */}
+
       <section className="gallery-final-cta">
+
         <div className="gallery-final-cta-content">
-          <span className="eyebrow">See It. Learn It. Build It.</span>
-          <h2>Want to create your own project story?</h2>
+
+          <span className="eyebrow">
+            See It. Learn It. Build It.
+          </span>
+
+          <h2>
+            Want to create your own project story?
+          </h2>
+
           <p>
-            Explore our courses and start building practical skills with
-            Reboot Code Academy.
+            Explore our courses and start building practical
+            skills with Reboot Code Academy.
           </p>
 
           <div className="gallery-final-cta-actions">
-            <button type="button" onClick={() => onNavigate('/courses')}>
+
+            <button
+              type="button"
+              onClick={() =>
+                onNavigate('/courses')
+              }
+            >
               Explore Courses
             </button>
+
             <button
               type="button"
               className="secondary-button"
-              onClick={() => onNavigate('/contact')}
+              onClick={() =>
+                onNavigate('/contact')
+              }
             >
               Book a Demo
             </button>
+
           </div>
+
         </div>
 
-        <div className="gallery-final-cta-mark" aria-hidden="true">
+
+        <div
+          className="gallery-final-cta-mark"
+          aria-hidden="true"
+        >
           <span>&lt;/&gt;</span>
-          <small>learn → practice → build</small>
+          <small>
+            learn → practice → build
+          </small>
         </div>
+
       </section>
 
+
+      {/* =====================================================
+          LIGHTBOX
+          ===================================================== */}
+
       {selectedItem && (
+
         <div
           className="gallery-lightbox"
           role="dialog"
           aria-modal="true"
-          aria-label={selectedItem.title || 'Gallery image'}
-          onClick={() => setSelectedItem(null)}
+          aria-label={
+            selectedItem.title ||
+            'Gallery image'
+          }
+          onClick={() =>
+            setSelectedItem(null)
+          }
         >
+
           <div
             className="gallery-lightbox-content"
-            onClick={(event) => event.stopPropagation()}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
+
             <button
               type="button"
               className="gallery-lightbox-close"
-              onClick={() => setSelectedItem(null)}
+              onClick={() =>
+                setSelectedItem(null)
+              }
               aria-label="Close gallery preview"
             >
               ×
             </button>
 
+
             <div className="gallery-lightbox-image">
+
               {selectedItem.image ? (
+
                 <img
                   src={selectedItem.image}
-                  alt={selectedItem.title || 'Gallery'}
+                  alt={
+                    selectedItem.title ||
+                    'Gallery'
+                  }
                 />
+
               ) : (
+
                 <div className="gallery-lightbox-placeholder">
                   <span>&lt;/&gt;</span>
                 </div>
+
               )}
+
             </div>
 
+
             <div className="gallery-lightbox-info">
-              <span>{selectedItem.category || 'Academy'}</span>
-              <h3>{selectedItem.title || 'Academy moment'}</h3>
+
+              <span>
+                {selectedItem.category ||
+                  'Academy'}
+              </span>
+
+              <h3>
+                {selectedItem.title ||
+                  'Academy moment'}
+              </h3>
+
               {selectedItem.description && (
-                <p>{selectedItem.description}</p>
+                <p>
+                  {selectedItem.description}
+                </p>
               )}
 
               {selectedItem.videoUrl && (
+
                 <a
                   href={selectedItem.videoUrl}
                   target="_blank"
@@ -393,11 +657,17 @@ function Gallery({ onNavigate }) {
                   <span>▶</span>
                   Watch Video
                 </a>
+
               )}
+
             </div>
+
           </div>
+
         </div>
+
       )}
+
     </div>
   )
 }
