@@ -3,24 +3,24 @@ import { useEffect, useState } from 'react'
 const CONTACT_KEY = 'reboot-code-academy-contact-information'
 
 const defaultContact = {
-  phone: '',
-  whatsapp: '',
-  email: '',
-  supportEmail: '',
-  addressLine1: '',
-  addressLine2: '',
+  phone: '918074079022',
+  whatsapp: '8074079022',
+  email: 'rebootcode6@gmail.com',
+  supportEmail: 'rebootcode6@gmail.com',
+  addressLine1: ' Pragathi Complex, Town Station Road, near 2 town bustand and 2, Balusumoodi, Bhimavaram, Andhra Pradesh 534202',
+  addressLine2: 'dsr block',
   city: 'Bhimavaram',
   state: 'Andhra Pradesh',
-  pincode: '',
-  instagram: '',
+  pincode: '534239',
+  instagram: 'https://www.instagram.com/reboot_code5?stkn=MWU0OWlpY3Q1a2xocw==',
   facebook: '',
   linkedin: '',
   youtube: '',
   telegram: '',
-  mondayFriday: '09:00 AM - 07:00 PM',
-  saturday: '09:00 AM - 05:00 PM',
-  sunday: 'Closed',
-  googleMapsUrl: '',
+  mondayFriday: '08:00 AM - 08:00 PM',
+  saturday: '08:00 AM - 08:00 PM',
+  sunday: '10:00 AM - 2:00 PM',
+  googleMapsUrl: 'https://www.google.com/maps/dir//Reboot+Code+Academy,+Pragathi+Complex,+Town+Station+Road,+near+2+town+bustand+and+2,+Balusumoodi,+Bhimavaram,+Andhra+Pradesh+534202/@16.5445632,81.5136768,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3a37d31a70b797eb:0xa87c81f250e90356!2m2!1d81.5223625!2d16.5459014?entry=ttu&g_ep=EgoyMDI2MTAwNS4wIKXMDSoASAFQAw%3D%3D',
 }
 
 function getSavedContact() {
